@@ -1,0 +1,375 @@
+<!--pnid:Aw9W7CRvBEvqY8wlM0AN6X--><!DOCTYPE html><!--pnid:YIWfcILm74KFXexCdfpKLJ-->
+<html data-page-node-id="c0dZHsIrIViCfJd9b5sFM3" lang="zh-CN"><!--pnid:Rk2AiE9BfOBxDtPT0XHWhx-->
+<head data-page-node-id="KixyDC00VzwRB0XcB5Sqrm"><!--pnid:5A0DwqHeWUQS19LxJHF82H-->
+<script data-page-node-id="VPTq92EKlZwEvlM806wsHP" src="/smartpage_comm/inject.js"></script><!--pnid:iEgdHF8KhGfhQAOKkcuH70-->
+    <meta data-page-node-id="3kssyu4FpDeEnkPcCgeMov" charset="UTF-8"><!--pnid:GtZPEFmLfQ3hv0tEy6gCKu-->
+    <meta data-page-node-id="3Nf9U6D3ClZrEIGhP6kDGA" name="viewport" content="width=device-width, initial-scale=1.0"><!--pnid:JW6VRuobQdwsE1T2E3tbDl-->
+    <title data-page-node-id="Hspd0wruIgm5PvKlJ56u0o" data-pnid-children="B5TmjEUQCBbXUTJBzBgNQo">受电弓碳滑条磨耗分析系统</title><!--pnid:Jv4myZcXR5yVoooXySMuMq-->
+    <link data-page-node-id="AMxnfOD8Hg0pxxVOnAVdMO" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><!--pnid:rGCmbxHnCmKavPEG97YnVf-->
+    <script data-page-node-id="5Ip23ecsxEZSwwMSrH60Sp" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><!--pnid:DOMVgkgBBrxPHfAXmE5iPO-->
+    <style data-page-node-id="adeIOcVHBSygMWOOE4FkKa" data-pnid-children="ldYDfoNCND1VZj02Jujo1F">
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .nav { background: #34495e; padding: 0; display: flex; justify-content: center; flex-wrap: wrap; }
+        .nav-item { color: white; padding: 15px 30px; cursor: pointer; transition: all 0.3s; border-bottom: 3px solid transparent; font-size: 1em; }
+        .nav-item:hover, .nav-item.active { background: #2980b9; border-bottom: 3px solid #f39c12; }
+        .content { padding: 40px; min-height: 600px; }
+        .section { display: none; animation: fadeIn 0.5s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: #f8f9fa; border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card h3 { color: #2c3e50; margin-bottom: 15px; font-size: 1.5em; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .btn { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 8px rgba(0,0,0,0.3); }
+        .btn-success { background: linear-gradient(135deg, #27ae60 0%, #229954 100%); }
+        .btn-danger { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .data-table th { background: #34495e; color: white; padding: 15px; text-align: left; font-weight: 600; }
+        .data-table td { padding: 12px 15px; border-bottom: 1px solid #ecf0f1; }
+        .data-table tr:hover { background: #f8f9fa; }
+        .chart-container { position: relative; height: 400px; margin: 30px 0; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+        .stat-card .value { font-size: 2.5em; font-weight: bold; }
+        .form-group { margin: 20px 0; }
+        .form-group label { display: block; margin-bottom: 8px; color: #2c3e50; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 2px solid #bdc3c7; border-radius: 8px; font-size: 1em; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #7f8c8d; }
+        .loading { text-align: center; padding: 20px; color: #3498db; }
+        .toast { position: fixed; top: 20px; right: 20px; background: #27ae60; color: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; display: none; }
+        .toast.error { background: #e74c3c; }
+        .status-indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+        .status-indicator.online { background: #27ae60; }
+        .status-indicator.offline { background: #e74c3c; }
+    </style><!--pnid:cpCG6F1qVfUQFFT1UQ5fu8-->
+</head><!--pnid:gh2qnh63Dy4Auzg6fhhv9d-->
+<body data-page-node-id="3SCehtZsdnKP901raW1eKt"><!--pnid:ShbwVhjyOGkdzNghnIYgOX-->
+    <div data-page-node-id="CFhGlZLj74zMWPw1Jz3cCD" class="toast" id="toast"></div><!--pnid:y3g0ODN5NsaUkS49iQALZx-->
+    
+    <div data-page-node-id="9U2FutDyJWSy1Vfhhh0K99" class="container"><!--pnid:FauqAIa22UvPqasvruQVzr-->
+        <div data-page-node-id="835n0X2vgyzDhoLgolgpO0" class="header"><!--pnid:MydniyvVInTR5Zby10IQfY-->
+            <h1 data-page-node-id="9EG3idsjkNkhFjB8hGfFAP"><i data-page-node-id="1UAcHYcOAY1XA5o43eSZkH" class="fas fa-train"></i><!--pnid:Z3lcOehLgS0JHOL6Q6uGUt--> 受电弓碳滑条磨耗分析系统</h1><!--pnid:zfMGeGjbJCYjWAFaoys0GA-->
+            <p data-page-node-id="TwGH4PpAIh4JvudqmLKGWC"><!--pnid:CNUkr5kj7vSX86KJx8j1l6-->城市轨道交通车辆受电弓碳滑条磨耗检测与分析平台 <span data-page-node-id="o4yAuPM4SadY8ZxOLj1zm0" class="status-indicator offline" id="statusIndicator"></span><span data-page-node-id="IpT0mEU9WlFiSYmivwY01p" id="statusText"><!--pnid:McO9HOaRto98pwHKHdUPFo-->连接中...</span></p><!--pnid:rPhKO5mS3GzWTu5cPTKCGn-->
+        </div><!--pnid:stTvu4xSSHPfYXfRY4F8ex-->
+
+        <div data-page-node-id="gwcNslc70DB9fNbVRCnVK9" class="nav"><!--pnid:75Iah9c5x1Gs7SwCnaRpAg-->
+            <div data-page-node-id="v0eZY1SkyMSQMH2iyFWDE5" class="nav-item active" onclick="showSection('upload')"><!--pnid:lqtpHbUJJxjk8RtsJZ2BzM-->数据上传</div><!--pnid:xdndOfGUe8oQ1Dq1PkYg46-->
+            <div data-page-node-id="v58Xb3l69stKXVsf75q9Vj" class="nav-item" onclick="showSection('dashboard')"><!--pnid:sPhoBcQKoj3eFXn335B82J-->系统概览</div><!--pnid:XiLTF5mEpFms3EMjDy0mF1-->
+            <div data-page-node-id="cJnl1RCqZwQNvEUgEodZTT" class="nav-item" onclick="showSection('analysis')"><!--pnid:MrrnAA6xEFMk99AOzPde1R-->磨耗分析</div><!--pnid:jn71sh59Z7OQEq3EWYC3oS-->
+            <div data-page-node-id="i81HPeFBA8fVx5QrxhI6E0" class="nav-item" onclick="showSection('history')"><!--pnid:qrRmCAdDQvmkUJArgEimkn-->历史记录</div><!--pnid:oEMOBI9vAUXLsp6mwZYuLr-->
+        </div><!--pnid:Q5phyrWcYAui5tFBrSFAOo-->
+
+        <div data-page-node-id="Z5VYwMwBzvbxrpnvV1UVbD" class="content"><!--pnid:dpWX43duv9aIocTfdkGoWZ-->
+            <!--pnid:kpGpwVB5mhm8iP01F8mD8o--><!-- 数据上传 --><!--pnid:9rVELtKZzbJIQEcXfKHyuk-->
+            <div data-page-node-id="4GHcMO4F4H16BgGIEXfOBl" id="upload" class="section active"><!--pnid:nSC3NxZ0CSoxaShj3Bvhnf-->
+                <div data-page-node-id="m8HD2r3PyovcdgQoZsrO9P" class="card"><!--pnid:uZ4BC2U2N8ul3yyLTqjR4C-->
+                    <h3 data-page-node-id="C0nh6Jn9Ozqv7qLc8vfOJF"><!--pnid:B9BmLL2OD6pHYEP2S4u5r7-->手动数据录入</h3><!--pnid:5FLxnpPeB3TiJNtFWqT0n1-->
+                    <form data-page-node-id="zPa2wWW06Sh0ueKnQBpkGf" id="manualEntryForm"><!--pnid:O6jQztMsyOccgvy16KuJFD-->
+                        <div data-page-node-id="xfImG48wYlaUNd6vS1efze" class="form-row"><!--pnid:qPhIVK3XU1b1w4xTBupUJc-->
+                            <div data-page-node-id="Q3zW6TEFmtIFmpug1GInQR" class="form-group"><!--pnid:02u669AUA7GB8ea3NjjlZ9-->
+                                <label data-page-node-id="GVIn9ITkfKGCuELJHwEenX"><!--pnid:k3XFIF2g7RiFQN4nEgshue-->车辆编号 *</label><!--pnid:E132HaT5Wi2BJkfexF3gIe-->
+                                <input data-page-node-id="aLSYUFnwWNLDkKdnNxjbMO" type="text" id="vehicleId" placeholder="例如：0501" pattern="[0-9]{4}" required><!--pnid:dnyeyETDd4lxzfFBw50qlr-->
+                            </div><!--pnid:0rvAeX7TsH8yfFhBsIOXBN-->
+                            <div data-page-node-id="krKtiJj5gdS90YbSIIA2tc" class="form-group"><!--pnid:jFoEEmorsYAsePjrsBanhw-->
+                                <label data-page-node-id="sAoTiFhqjoTXmaYPtvOt26"><!--pnid:YPQrMu74an0M8c3qi6jrOv-->检测日期 *</label><!--pnid:xKSXy3b15i7Nxife7l67Fk-->
+                                <input data-page-node-id="zZL3eja9WSrgcepf4GpkXj" type="date" id="inspectionDate" required><!--pnid:zmQI4cV0zQho4fUxyGNi9O-->
+                            </div><!--pnid:uvX5XDKP8o4Ualu1uhmlJb-->
+                        </div><!--pnid:cImaeBBD0OHa6dpdCIcAPB-->
+                        <div data-page-node-id="9H7eDsVIaR1rmdhMCkYecA" class="form-row"><!--pnid:ABmqZHpJn77BMX4jV3mp1u-->
+                            <div data-page-node-id="9i6l5Q38hEMOfcXzuvcYj1" class="form-group"><!--pnid:3875Wc18CXbUe9aOl3SaBm-->
+                                <label data-page-node-id="DEBZoXInxa6otd0smrAScJ"><!--pnid:fEuwbMLHwd7zszrTEoLbDy-->MP1-1 (mm) *</label><!--pnid:RWVdNE6SINv5aE0rhQsr8y-->
+                                <input data-page-node-id="5G2B98Zo4Socrkb4xDVq1b" type="number" id="mp11" step="0.1" required><!--pnid:Sl04uKB3OfubSCXk3maTpo-->
+                            </div><!--pnid:82a80ONUU91C5CDe2LtEQw-->
+                            <div data-page-node-id="3j0Z19heBOEn4M3Ev5tzt1" class="form-group"><!--pnid:MsQx1PjRJCIFDil6tJ9Imy-->
+                                <label data-page-node-id="eHvAsz7AEZZmNZjVRLtZGK"><!--pnid:pa1oYzgo3fsaZ9mhXaZWc3-->MP1-2 (mm) *</label><!--pnid:xI4TRyp0G0qZjEJ4I9DeJx-->
+                                <input data-page-node-id="wp1CzziXbavWTNk00AzQrK" type="number" id="mp12" step="0.1" required><!--pnid:wDlpmqPA7nfUORDNbZ32ya-->
+                            </div><!--pnid:pMP3fPi9wq7EHu3BqJIIZ4-->
+                        </div><!--pnid:R85Bei6ISHUKPO9qp0cJmq-->
+                        <div data-page-node-id="SopArGc6DSSxuMduRTO4TA" class="form-row"><!--pnid:8E8MduD2m4yG57ZEvRWryq-->
+                            <div data-page-node-id="YKaojFgdqRNZlOdFrcCdaq" class="form-group"><!--pnid:C6qByNo8U8tse85UVpRICW-->
+                                <label data-page-node-id="4UzB7s5NvANFC6lmQISUCe"><!--pnid:5B9F108xv90PnK98LMwwzD-->MP2-1 (mm) *</label><!--pnid:GzNjdVLTes6YkgMNo2vihU-->
+                                <input data-page-node-id="1LEDPJjRHbJNnQPYM95L5P" type="number" id="mp21" step="0.1" required><!--pnid:GMHVOJ2KChd0Yt7P0rNMK8-->
+                            </div><!--pnid:fruNn47CsaU8tnKj9Y50nD-->
+                            <div data-page-node-id="cI79o9bmLOw1SKIInUkAfG" class="form-group"><!--pnid:HO3UKGemjO50XM1DI6MaRZ-->
+                                <label data-page-node-id="b1YPYDhX0M9oEeZmx4jll7"><!--pnid:c5SBpNBnrObrP2O4U0x7lx-->MP2-2 (mm) *</label><!--pnid:YXrw8pWECmBSWd4oAD6OlI-->
+                                <input data-page-node-id="4JEx4C4ARFZ7htdSdMyuS6" type="number" id="mp22" step="0.1" required><!--pnid:0Kte2K4RZ9Ajz47qw2eiyC-->
+                            </div><!--pnid:ME4muLTFfnIBUfnx5Ss4Zo-->
+                        </div><!--pnid:VZZLcGodMKzNx6Y9trA8ia-->
+                        <div data-page-node-id="AlXJEjpne03ng7VbIvfYY7" class="form-row"><!--pnid:y0ubm5DLmLV4DQFNnfsCow-->
+                            <div data-page-node-id="zXFQh5SEReAIDnAZBPZA0v" class="form-group"><!--pnid:hMsjmVgT3ctOpBTEGjYsJV-->
+                                <label data-page-node-id="N3bpkNGjgkmTH3lmDWt488"><!--pnid:bmBWn95ytwTk3m3FYCImlQ-->公里数 (km) *</label><!--pnid:pGLMksaJJADA008GLJpaKn-->
+                                <input data-page-node-id="p2QsnSOg67wkWjnAKoDDhN" type="number" id="mileage" required><!--pnid:W4axbL4LJk987tIr3D5x0u-->
+                            </div><!--pnid:PM0gf8EXosvi8q7n9k1w8U-->
+                            <div data-page-node-id="oIKaUMko1aeaLZb9VyG8X6" class="form-group"><!--pnid:KVrfNbcIvIL7TOomNHDlTK-->
+                                <label data-page-node-id="inKOR07ifCP5niecJVkdjz"><!--pnid:Hqk58RTlrAKaK5CFecZjIj-->检测人员 *</label><!--pnid:XDJDEc3czpogX2xt2hzgZz-->
+                                <input data-page-node-id="FGRoIFBx5X6cIM1MLEnGIf" required type="text" id="inspector"><!--pnid:msoQ8ze5nZzTZRUENNJhSo-->
+                            </div><!--pnid:A8LwILfdrUsDdqeMGd7Ad5-->
+                        </div><!--pnid:cXTNQDHs2iofHKkQpEh9k9-->
+                        <button data-page-node-id="QRZ6QFO5r1Pm0oRo0ICLFW" class="btn btn-success" type="submit"><!--pnid:b9yK6EcECcZDZWLGF3cq5x-->保存记录</button><!--pnid:qTlo9DhHpbC4eSqq3ZCFtx-->
+                        <button data-page-node-id="9fOPMJzw00Kxughl6xZGnD" type="button" class="btn" onclick="location.reload()"><!--pnid:Dda6OQnIqFBMsaVW8Vdu1r-->刷新数据</button><!--pnid:jfUGuDMqr2ZIgMqPXHdulh-->
+                    </form><!--pnid:2yUORCUSGcpInfbdSW816y-->
+                </div><!--pnid:NwiIfJo0ooVLPdiId5M6T8-->
+            </div><!--pnid:5fVBAvC6FFMt34FDaX0K4V-->
+
+            <!--pnid:BCqk1TvhDe6IOiDSvBdpBT--><!-- 系统概览 --><!--pnid:rizoRKC8sAHT8VPBXTJqqb-->
+            <div data-page-node-id="3vETIYGhR3WWJbK0tsIvVu" id="dashboard" class="section"><!--pnid:09OfOGLCSj1UuNNbypm9bA-->
+                <div data-page-node-id="dcZmXayapUlc3Pkf5L2dhv" class="stats-grid"><!--pnid:H5yRJB3CUfxl85UO3bsVBC-->
+                    <div data-page-node-id="V5rSIZAIsRgtDVW7s17nA7" class="stat-card"><h4 data-page-node-id="fKzN8nNhMBxkVhw0TqPhmu"><!--pnid:HXYGh0m6PtlDFrMUOVhGfa-->检测记录</h4><div data-page-node-id="Z5XHiFmDb92cHCexKOypG6" id="totalCount" class="value"><!--pnid:e9wiHUPA9v4TeFjiTuJ4GP-->0</div></div><!--pnid:zOs5DgS2dDtvPfEDg77yFK-->
+                    <div data-page-node-id="b0xCe7KfG6USCO96bYoSyh" class="stat-card"><h4 data-page-node-id="0lR8NHY8LlEKBFRVYONxnX"><!--pnid:FJSpwU9g2IxnkdvznM5R6S-->平均厚度</h4><div data-page-node-id="TwOKKdDynBAJ9ZXBOSoTCM" class="value" id="avgThickness"><!--pnid:28EiJjdOc0MBv6hwcnExhJ-->0mm</div></div><!--pnid:3gXxJvDh94dqAAxsYgHLBq-->
+                    <div data-page-node-id="QdDkEvISEld0oWXC0ONONE" class="stat-card"><h4 data-page-node-id="7LJHZCJMomCNIsMg0w7OAB"><!--pnid:Vw45koKMRxlGzUBRZ7vlho-->最小厚度</h4><div data-page-node-id="9CqdbHTEnYA4LJ1ojE6V2M" class="value" id="minThickness"><!--pnid:rebw3B60RH1bKoPnbnEXuv-->0mm</div></div><!--pnid:msGvUPb5eInlx1414forf3-->
+                    <div data-page-node-id="OtylNL0cBZs2EozZ6IcMf4" class="stat-card"><h4 data-page-node-id="pDJvI2OxTbY97GjcB97fxx"><!--pnid:ryndAzxqRMRcKvGSH8Ekwn-->车辆数</h4><div data-page-node-id="vVTfiHhGPgwMxj1FWNQwpS" class="value" id="vehicleCount"><!--pnid:BDE9dTRdJMaXnNXMnGuxso-->0</div></div><!--pnid:FVOYZ7TeD6tqYlTBPU3U4o-->
+                </div><!--pnid:ICrSc2eMzk8SeoKDuq3vAM-->
+            </div><!--pnid:EjCM99e4PJGpd1vXrqOv4G-->
+
+            <!--pnid:p6kXbcYYXAhUIMHvi6Ydvp--><!-- 磨耗分析 --><!--pnid:M7bxyGWvVPja7Bak1DfK7p-->
+            <div data-page-node-id="n6a4aFMC9nNAuGIvlxE76q" id="analysis" class="section"><!--pnid:8CGNg3mhOnpwqDjQh9XWAk-->
+                <div data-page-node-id="LG93eA15ZqwHsxAFrIDkzk" class="card"><!--pnid:fdxXhvokLdPpH4GyJhTAhY-->
+                    <h3 data-page-node-id="KhD9GIJt1hIUxxZAhu6IBV"><!--pnid:RyIYENeHPQ7ilsRXptEUea-->磨耗分析</h3><!--pnid:5pqyRjGi5BiqCsHeSAKUyl-->
+                    <div data-page-node-id="d8plFlQBPIDRkB37EjKU5G" id="analysisEmpty" class="empty-state"><p data-page-node-id="WuEmUBDZ1fUvhRn2MSJ0sI"><!--pnid:uZ7T9DzirYQBoY1Zjnls8K-->暂无数据</p></div><!--pnid:ZZsAaAB4IE1pyokwtdMR9K-->
+                    <div data-page-node-id="3QIn8YKdI8Gta7AsLGKs00" id="analysisResult" style="display:none"><div data-page-node-id="2JosaS66SBJnCERG1BWhrD" class="chart-container"><canvas data-page-node-id="y3WXtW7pGyrxBFzvQrqCHf" id="wearChart"></canvas></div></div><!--pnid:a2vHKhNCq2spOOyuwQbJ4G-->
+                </div><!--pnid:d63GUSRczT8R0Va4sEHFOF-->
+            </div><!--pnid:y7ptZs8IpAvbAkGg2ELo4G-->
+
+            <!--pnid:5WYdsRCYDnC7yGbIhbbF3Z--><!-- 历史记录 --><!--pnid:VzVuyjqgElLy3kjXY2sP80-->
+            <div data-page-node-id="dCQSvHxN1QBLeWWkUkMSsS" class="section" id="history"><!--pnid:R0NXCV3zsozEJ6TzQWfCGh-->
+                <div data-page-node-id="b0qHiOxsLYOT3tD90JGa5f" class="card"><!--pnid:fABKD1yGEIRlx4vCnE9Aq6-->
+                    <h3 data-page-node-id="0FXHUbuYzgHKttF6LonsAJ"><!--pnid:pCnS7dmfKTc7t3INMaW5M0-->历史记录 <small data-page-node-id="CGeEx1GfPGO4GMj5hAzkKj" id="recordCount" style="font-size:0.6em; color:#7f8c8d"></small></h3><!--pnid:lbw8KOyEdh7L7UJf8z5RDh-->
+                    <div data-page-node-id="4lGZKL8o1YpQB1aILCLfVt" id="historyEmpty" class="empty-state"><p data-page-node-id="1oWaky0L7dDawhBAOH1CGn"><!--pnid:LAajpqJWo3RRSkTWTmysKT-->暂无数据</p></div><!--pnid:xQDUrwd773DSDOIGeX7BW6-->
+                    <div data-page-node-id="hJSdmhHCHAe2BeHZvAKtWC" id="historyTable" style="display:none"><!--pnid:UJE5eKCRtmGDx4ccnhUJad-->
+                        <table data-page-node-id="4msT9Ga6cNp6eMkmSMjxVN" class="data-table"><!--pnid:Jp8avtkHNDr1sIhGDPGZlm-->
+                            <thead data-page-node-id="ajWj37plJAif02NDaZFMzM"><tr data-page-node-id="IZVBCcSKeu4FcCkdGwsMuM"><th data-page-node-id="ptCji98dNcSW02XmSad6Mn"><!--pnid:HStyCp9tGtpiDu2NVl8gLD-->日期</th><th data-page-node-id="A8jY53Ov2z6NvomFtYycCJ"><!--pnid:ZOmVmFAP3WXqXGB7aJT6iS-->车辆</th><th data-page-node-id="aLuCRcsPl6HDDEQyw0jfwb"><!--pnid:TduEXsg0v9AuSAoPLg19IB-->MP1-1</th><th data-page-node-id="4NBFs4YQvlboTNO5UmbIjk"><!--pnid:rL1QEHbYVFXVOca4aD9Dka-->MP1-2</th><th data-page-node-id="XXuaR2zI53W0EAgFBYdFUl"><!--pnid:FwnCJcHEU2LnTyuhECRTYX-->MP2-1</th><th data-page-node-id="wXYm7gKyKJNAd2b2rJYLUC"><!--pnid:AX0aP67hbH3ARtALErKvyP-->MP2-2</th><th data-page-node-id="g2pbwOWWDfrMYFdpGgjD3n"><!--pnid:q5Uzx8TYUPAzHwKvvvuMSN-->公里数</th><th data-page-node-id="Z4DypHiaEd4XiNSN8dzEFK"><!--pnid:VGG6UZ1iEh8ZyphkbacYkV-->人员</th><th data-page-node-id="kGxEgp6iCSDb0ygew0t4n4"><!--pnid:k8ipxKNHBCxY2Oicffdpd7-->操作</th></tr></thead><!--pnid:LCxVUixTvCDDV2hqwDekJr-->
+                            <tbody data-page-node-id="alr23i6NOx8SK3AjW6Xlhe" id="historyTableBody"></tbody><!--pnid:kkByZMzpgeNiKKp5QNrvrC-->
+                        </table><!--pnid:eTVl9Kh1w7z4dA39wB2VZm-->
+                    </div><!--pnid:CLPSteFHNED9MD9IlxbfTm-->
+                </div><!--pnid:MFiNO4AS1dy4Qibb3b3LrZ-->
+            </div><!--pnid:J3kz3ZAe2e9xqa37zmhXby-->
+        </div><!--pnid:fQBG7YDTjxnkeKrzd370fG-->
+    </div><!--pnid:RxBX8dTQsENJVFKFhhh1Tc-->
+
+    <script data-page-node-id="cvbAdpZSCKGRY94aTrtCk6" src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script><!--pnid:wrmTJ3f4n0Ogbnlt9fwj5O-->
+    <script data-page-node-id="7ulk0cA3xi7EuDKSXUaBgh" data-pnid-children="JQIrieCgeqrj46oAuF1Dft">
+        // Supabase 配置
+        const SUPABASE_URL = 'https://jqhmrlyemftyjmxhxkrh.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxaG1ybHllbWZ0eWpteGh4a3JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNzU3NjMsImV4cCI6MjA5ODY1MTc2M30.WE1xSk1Sg75UV5fAjZF9ceOySZe-ZKKCG4573LHdPkI';
+
+        // 初始化 Supabase 客户端
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // 数据存储
+        let inspectionData = [];
+        let wearChartInstance = null;
+
+        // Toast 提示
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = isError ? 'toast error' : 'toast';
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        // 页面加载时初始化
+        window.onload = function() {
+            document.getElementById('inspectionDate').valueAsDate = new Date();
+            loadData();
+        };
+
+        // 加载数据
+        async function loadData() {
+            try {
+                const { data, error } = await supabase
+                    .from('pantograph_data')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                inspectionData = data || [];
+                updateStatus(true);
+                updateStatistics();
+                displayHistoryData();
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                updateStatus(false);
+                showToast('数据加载失败，请检查网络连接', true);
+            }
+        }
+
+        // 更新连接状态
+        function updateStatus(online) {
+            const indicator = document.getElementById('statusIndicator');
+            const text = document.getElementById('statusText');
+            if (online) {
+                indicator.className = 'status-indicator online';
+                text.textContent = '已连接';
+            } else {
+                indicator.className = 'status-indicator offline';
+                text.textContent = '离线';
+            }
+        }
+
+        // 导航切换
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (id === 'analysis' && inspectionData.length > 0) {
+                generateAnalysis();
+            }
+        }
+
+        // 表单提交
+        document.getElementById('manualEntryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const data = {
+                vehicle_id: document.getElementById('vehicleId').value,
+                inspection_date: document.getElementById('inspectionDate').value,
+                mp11: parseFloat(document.getElementById('mp11').value),
+                mp12: parseFloat(document.getElementById('mp12').value),
+                mp21: parseFloat(document.getElementById('mp21').value),
+                mp22: parseFloat(document.getElementById('mp22').value),
+                mileage: parseInt(document.getElementById('mileage').value),
+                inspector: document.getElementById('inspector').value
+            };
+
+            try {
+                const { error } = await supabase
+                    .from('pantograph_data')
+                    .insert([data]);
+
+                if (error) throw error;
+
+                showToast('保存成功！');
+                this.reset();
+                document.getElementById('inspectionDate').valueAsDate = new Date();
+                await loadData();
+            } catch (error) {
+                console.error('保存失败:', error);
+                showToast('保存失败: ' + error.message, true);
+            }
+        });
+
+        // 更新统计
+        function updateStatistics() {
+            document.getElementById('totalCount').textContent = inspectionData.length;
+            document.getElementById('recordCount').textContent = `共 ${inspectionData.length} 条记录`;
+            
+            if (inspectionData.length > 0) {
+                const all = inspectionData.flatMap(d => [d.mp11, d.mp12, d.mp21, d.mp22]);
+                document.getElementById('avgThickness').textContent = (all.reduce((a,b)=>a+b,0)/all.length).toFixed(1) + 'mm';
+                document.getElementById('minThickness').textContent = Math.min(...all).toFixed(1) + 'mm';
+                document.getElementById('vehicleCount').textContent = [...new Set(inspectionData.map(d=>d.vehicle_id))].length;
+            } else {
+                document.getElementById('avgThickness').textContent = '0mm';
+                document.getElementById('minThickness').textContent = '0mm';
+                document.getElementById('vehicleCount').textContent = '0';
+            }
+        }
+
+        // 显示历史记录
+        function displayHistoryData() {
+            if (inspectionData.length === 0) {
+                document.getElementById('historyEmpty').style.display = 'block';
+                document.getElementById('historyTable').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('historyEmpty').style.display = 'none';
+            document.getElementById('historyTable').style.display = 'block';
+
+            const tbody = document.getElementById('historyTableBody');
+            tbody.innerHTML = '';
+
+            inspectionData.forEach(data => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${data.inspection_date}</td>
+                    <td>${data.vehicle_id}</td>
+                    <td>${data.mp11}</td>
+                    <td>${data.mp12}</td>
+                    <td>${data.mp21}</td>
+                    <td>${data.mp22}</td>
+                    <td>${data.mileage}</td>
+                    <td>${data.inspector}</td>
+                    <td>
+                        <button class="btn btn-danger" style="padding: 5px 15px; font-size: 0.9em;" onclick="deleteRecord(${data.id})">
+                            <i class="fas fa-trash"></i> 删除
+                        </button>
+                    </td>
+                `;
+            });
+        }
+
+        // 删除记录
+        async function deleteRecord(id) {
+            if (!confirm('确定要删除这条记录吗？')) return;
+
+            try {
+                const { error } = await supabase
+                    .from('pantograph_data')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                showToast('删除成功！');
+                await loadData();
+            } catch (error) {
+                console.error('删除失败:', error);
+                showToast('删除失败: ' + error.message, true);
+            }
+        }
+
+        // 生成分析图表
+        function generateAnalysis() {
+            if (inspectionData.length === 0) {
+                document.getElementById('analysisEmpty').style.display = 'block';
+                document.getElementById('analysisResult').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('analysisEmpty').style.display = 'none';
+            document.getElementById('analysisResult').style.display = 'block';
+
+            const ctx = document.getElementById('wearChart').getContext('2d');
+            
+            if (wearChartInstance) {
+                wearChartInstance.destroy();
+            }
+
+            const labels = inspectionData.map(d => `${d.vehicle_id} - ${d.inspection_date}`);
+            const mp11Data = inspectionData.map(d => d.mp11);
+            const mp12Data = inspectionData.map(d => d.mp12);
+            const mp21Data = inspectionData.map(d => d.mp21);
+            const mp22Data = inspectionData.map(d => d.mp22);
+
+            wearChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'MP1-1', data: mp11Data, backgroundColor: 'rgba(52, 152, 219, 0.7)', borderColor: 'rgb(52, 152, 219)', borderWidth: 2 },
+                        { label: 'MP1-2', data: mp12Data, backgroundColor: 'rgba(46, 204, 113, 0.7)', borderColor: 'rgb(46, 204, 113)', borderWidth: 2 },
+                        { label: 'MP2-1', data: mp21Data, backgroundColor: 'rgba(155, 89, 182, 0.7)', borderColor: 'rgb(155, 89, 182)', borderWidth: 2 },
+                        { label: 'MP2-2', data: mp22Data, backgroundColor: 'rgba(241, 196, 15, 0.7)', borderColor: 'rgb(241, 196, 15)', borderWidth: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { title: { display: true, text: '各测点厚度对比' } },
+                    scales: { y: { beginAtZero: false, title: { display: true, text: '厚度 (mm)' } } }
+                }
+            });
+        }
+    </script><!--pnid:339vSf0j3kHindGDZrdMwd-->
+</body><!--pnid:2BgDuiaBDeHsCKvUCDblBt-->
+</html>
